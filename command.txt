@@ -1,0 +1,3 @@
+django-admin startproject config .
+python manage.py startapp habbits
+python manage.py startapp users
