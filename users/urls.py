@@ -10,13 +10,13 @@ from users.views import CustomUserViewSet
 app_name = UsersConfig.name
 
 router = DefaultRouter()
-router.register(r"user", CustomUserViewSet, basename="user")
+router.register(r"users", CustomUserViewSet, basename="users")
 
 
 urlpatterns = [
 
     path(
-        "user/login/",
+        "users/login/",
         TokenObtainPairView.as_view(permission_classes=(AllowAny,)),
         name="login",
     ),
