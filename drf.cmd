@@ -11,6 +11,8 @@ poetry add --group task celery
 poetry add --group task django-celery-beat
 poetry add --group docs drf-yasg
 poetry add --group test coverage
+poetry add --group safety django-cors-headers
+
 
 
 
