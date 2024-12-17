@@ -36,12 +36,11 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         user.save()
 
     def get_serializer_class(self):
-        if self.action in ["retrieve", "update", "partial_update"]:
+        # if self.action in ["retrieve", "update", "partial_update"]:
 
-            user = self.get_object()
-            if self.request.user == user:
-            # if self.request.user.user_permissions == IsAccountOwner:
-
-                return CustomUserDetailSerializer  # Если пользователь владелец, используем полный сериализатор
-            else:
-                return CustomUserSerializer  # В противном случае - ограниченный
+        # user = self.get_object()
+        # if self.request.user == user:
+        if self.request.user.user_permissions == IsAccountOwner:
+            return CustomUserDetailSerializer  # Если пользователь владелец, используем полный сериализатор
+        else:
+            return CustomUserSerializer  # В противном случае - ограниченный
