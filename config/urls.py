@@ -42,6 +42,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("users/", include("users.urls", namespace="users")),
+    path("habits/", include("habits.urls", namespace="habits")),  # маршрут к приложению Привычки
     path("favicon.ico", RedirectView.as_view(url="/static/img/favicon.ico")),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
