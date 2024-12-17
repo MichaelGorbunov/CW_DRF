@@ -13,6 +13,7 @@ class RelatedAndIsGoodValidator:
     """Проверка связанной привычки и признания ее приятной"""
 
     def __call__(self, habit):
-        if habit.get('habit_link'):
-            if not habit.get('is_enjoyed'):
+        celected_habit = habit.get('habit_link')
+        if celected_habit:
+            if not celected_habit.is_enjoyed:
                 raise ValidationError('Связанная привычка должна быть приятной')
