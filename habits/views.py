@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView
 
 from habits.models import Habit
+from habits.paginators import CustomPagination
 from habits.permissions import IsOwner
 from habits.serializers import HabitSerializer
 
@@ -10,6 +11,7 @@ class HabitListAPIView(ListAPIView):
     """Контроллер вывода списка привычек"""
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
+    pagination_class = CustomPagination
 
 
 class HabitCreateAPIView(CreateAPIView):
@@ -28,6 +30,7 @@ class HabitPublishedListAPIView(ListAPIView):
     """Контроллер вывода списка публичных привычек"""
     serializer_class = HabitSerializer
     queryset = Habit.objects.filter(is_published=True)
+    pagination_class = CustomPagination
 
 
 class HabitRetrieveAPIView(RetrieveAPIView):
