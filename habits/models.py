@@ -99,7 +99,10 @@ class Habit(models.Model):
     )
 
     def __str__(self):
-        return f'{self.action} в {self.habit_time} в {self.place}'
+        # return f'{self.action} в {self.habit_time} в {self.place}'
+        return (
+            f"{'Приятная' if self.is_enjoyed else 'Полезная'} привычка: {self.action}"
+        )
 
     class Meta:
         verbose_name = 'Привычка'

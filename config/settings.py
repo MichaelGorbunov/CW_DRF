@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "drf_yasg",
     "habits",
 
+    "django_celery_beat",
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +161,31 @@ SIMPLE_JWT = {
 
 # Variables
 NULLABLE = {"blank": True, "null": True}
+
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+#
+# CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+# CELERY_BEAT_SCHEDULE = {
+#     "deactivate_inactive_users": {
+#         "task": "habits.tasks.send_habit_reminder",
+#         "schedule": timedelta(days=1),
+#     },
+# }
+
+CELERY_BEAT_SCHEDULE = {
+    "chk_habit": {
+        "task": "habits.task.check_habits",
+        "schedule": timedelta(minutes=1),
+    },
+}
+
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+TELEGRAM_BOT_URL = os.getenv("TELEGRAM_BOT_URL")

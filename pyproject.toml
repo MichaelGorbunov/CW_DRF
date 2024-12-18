@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -23,6 +24,7 @@ pytest-cov = "^6.0.0"
 [tool.poetry.group.task.dependencies]
 celery = "^5.4.0"
 django-celery-beat = "^2.7.0"
+redis = "^5.2.1"
 
 
 [tool.poetry.group.docs.dependencies]
