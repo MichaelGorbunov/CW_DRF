@@ -5,6 +5,7 @@ from habits.models import Habit
 from habits.paginators import CustomPagination
 from habits.permissions import IsOwner
 from habits.serializers import HabitSerializer
+from habits.task import check_habits
 
 
 class HabitListAPIView(ListAPIView):
@@ -45,6 +46,13 @@ class HabitUpdateAPIView(UpdateAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = (IsOwner,)
+
+    def perform_update(self, serializer):
+        """отправка сообщения об обновлении курса"""
+        instance = serializer.save()
+        check_habits()
+        # send_email_to_subs_after_updating_course.delay(instance.pk)
+        # send_email_to_subs_after_updating_course(instance.pk)
 
 
 class HabitDestroyAPIView(DestroyAPIView):
