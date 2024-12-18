@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
 from datetime import timedelta
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -40,16 +41,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "users",
     "rest_framework",
     "rest_framework_simplejwt",
     "drf_yasg",
     "habits",
-
     "django_celery_beat",
     "corsheaders",
-
 ]
 
 MIDDLEWARE = [
@@ -147,7 +145,7 @@ AUTH_USER_MODEL = "users.CustomUser"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        'rest_framework.authentication.SessionAuthentication',# для тестирования в браузере
+        "rest_framework.authentication.SessionAuthentication",  # для тестирования в браузере
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -171,7 +169,6 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-
 #
 # CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # CELERY_BEAT_SCHEDULE = {
@@ -183,7 +180,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BEAT_SCHEDULE = {
     "chk_habit": {
-        "task": "habits.task.check_habits",
+        "task": "habits.task.send_habit_reminder",
         "schedule": timedelta(minutes=1),
     },
 }
@@ -191,16 +188,13 @@ CELERY_BEAT_SCHEDULE = {
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_BOT_URL = os.getenv("TELEGRAM_BOT_URL")
 
-
-CORS_ALLOWED_ORIGINS = [# Замените на адрес вашего фронтенд-сервера
+CORS_ALLOWED_ORIGINS = [  # Замените на адрес вашего фронтенд-сервера
     "http://localhost:8000",
     "http://read-only.example.com",
     "https://read-and-write.example.com",
-
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://read-and-write.example.com", #  Замените на адрес вашего фронтенд-сервера
+    "https://read-and-write.example.com",  # Замените на адрес вашего фронтенд-сервера
     # и добавьте адрес бэкенд-сервера
 ]
-

@@ -1,8 +1,9 @@
 from django.urls import path
+
 from habits.apps import HabitsConfig
-from habits.views import (HabitListAPIView, HabitRetrieveAPIView,
-                          HabitCreateAPIView, HabitUpdateAPIView,
-                          HabitDestroyAPIView, HabitPublishedListAPIView)
+from habits.views import (HabitCreateAPIView, HabitDestroyAPIView,
+                          HabitListAPIView, HabitPublishedListAPIView,
+                          HabitRetrieveAPIView, HabitUpdateAPIView)
 
 app_name = HabitsConfig.name
 
@@ -18,5 +19,5 @@ urlpatterns = [
     # изменение одной привычки
     path("<int:pk>/update/", HabitUpdateAPIView.as_view(), name="habits-update"),
     # удаление одной привычки
-    path("<int:pk>/delete/", HabitDestroyAPIView.as_view(), name="habits-delete" ),
+    path("<int:pk>/delete/", HabitDestroyAPIView.as_view(), name="habits-delete"),
 ]

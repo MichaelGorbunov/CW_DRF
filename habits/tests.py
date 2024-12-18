@@ -1,16 +1,21 @@
-from django.test import TestCase
-
-from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APIClient, APITestCase
 
 from habits.models import Habit
 from users.models import CustomUser
+
+
 class HabitTestCase(APITestCase):
     def setUp(self):
-        self.user = CustomUser.objects.create(email="user1@habits.ru", password='123456789',username="user1")
+        self.user = CustomUser.objects.create(
+            email="user1@habits.ru", password="123456789", username="user1"
+        )
         self.habit = Habit.objects.create(
-            owner=self.user, place="на улице", habit_time="12:00:00", action="бег", lead_time='60'
+            owner=self.user,
+            place="на улице",
+            habit_time="12:00:00",
+            action="бег",
+            lead_time="60",
         )
         self.client.force_authenticate(user=self.user)
 
@@ -27,7 +32,7 @@ class HabitTestCase(APITestCase):
 class PublicHabitListAPIViewTest(APITestCase):
     def setUp(self):
         self.test_user1 = CustomUser.objects.create(
-            email="user1@habits.ru",username="user1", password="12345678"
+            email="user1@habits.ru", username="user1", password="12345678"
         )
         self.client = APIClient()
 
@@ -137,7 +142,9 @@ class HabitValidationTestCase(APITestCase):
     def test_create_habit_with_reward_and_related_habit(self):
         """Тест на ошибку при указании одновременно вознаграждения и связанной привычки"""
         self.client.force_authenticate(user=self.test_user1)
-        response = self.client.post("/habits/create/", self.incorrect_data1, format="json")
+        response = self.client.post(
+            "/habits/create/", self.incorrect_data1, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn(
             "Вознаграждение и связанная привычка не могут быть одновременно указаны",
@@ -147,7 +154,9 @@ class HabitValidationTestCase(APITestCase):
     def test_create_habit_with_duration_more_than_120(self):
         """Тест на ошибку при времени выполнения больше 120 секунд"""
         self.client.force_authenticate(user=self.test_user1)
-        response = self.client.post("/habits/create/", self.incorrect_data2, format="json")
+        response = self.client.post(
+            "/habits/create/", self.incorrect_data2, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn(
             "Ensure this value is less than or equal to 120.", str(response.data)
@@ -156,7 +165,9 @@ class HabitValidationTestCase(APITestCase):
     def test_create_habit_with_no_weekdays_for_weekly(self):
         """Тест на ошибку при отсутствии дней недели для недельной привычки"""
         self.client.force_authenticate(user=self.test_user1)
-        response = self.client.post("/habits/create/", self.incorrect_data3, format="json")
+        response = self.client.post(
+            "/habits/create/", self.incorrect_data3, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn(
             "Привычка должна выполняться хотя бы раз в 7 дней. Укажите дни недели",
@@ -166,5 +177,7 @@ class HabitValidationTestCase(APITestCase):
     def test_create_habit_with_weekdays_for_daily(self):
         """Тест на ошибку при указании дней недели для ежедневной привычки"""
         self.client.force_authenticate(user=self.test_user1)
-        response = self.client.post("/habits/create/", self.incorrect_data4, format="json")
+        response = self.client.post(
+            "/habits/create/", self.incorrect_data4, format="json"
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

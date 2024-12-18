@@ -14,7 +14,6 @@ router.register(r"users", CustomUserViewSet, basename="users")
 
 
 urlpatterns = [
-
     path(
         "users/login/",
         TokenObtainPairView.as_view(permission_classes=(AllowAny,)),

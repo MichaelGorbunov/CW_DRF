@@ -1,13 +1,13 @@
-from django.shortcuts import render
-
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, permissions, viewsets
-from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import AllowAny, IsAuthenticated
+# from django.shortcuts import render
+# from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
+# from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import AllowAny
 
 from users.models import CustomUser
 from users.permissions import IsAccountOwner
-from users.serializer import (CustomUserDetailSerializer, CustomUserSerializer)
+from users.serializer import CustomUserDetailSerializer, CustomUserSerializer
+
 
 class CustomUserViewSet(viewsets.ModelViewSet):
     """viewset модели customuser"""
@@ -15,7 +15,6 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     # serializer_class = CustomUserSerializer
     queryset = CustomUser.objects.all()
     permission_classes = [AllowAny]  # Пзволяем создавать пользователей без авторизации
-
 
     def get_permissions(self):
         # Получаем список разрешений, в зависимости от типа запроса

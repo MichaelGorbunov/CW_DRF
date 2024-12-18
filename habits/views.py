@@ -1,15 +1,21 @@
-from django.shortcuts import render
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView
+# from django.shortcuts import render
+# from django.utils.timezone import now
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     ListAPIView, RetrieveAPIView,
+                                     UpdateAPIView)
 
 from habits.models import Habit
 from habits.paginators import CustomPagination
 from habits.permissions import IsOwner
 from habits.serializers import HabitSerializer
-from habits.task import check_habits
+
+# from habits.servises import send_telegram_message
+# from habits.task import send_habit_reminder
 
 
 class HabitListAPIView(ListAPIView):
     """Контроллер вывода списка привычек"""
+
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     pagination_class = CustomPagination
@@ -17,6 +23,7 @@ class HabitListAPIView(ListAPIView):
 
 class HabitCreateAPIView(CreateAPIView):
     """Контроллер создания новой привычки"""
+
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
 
@@ -29,6 +36,7 @@ class HabitCreateAPIView(CreateAPIView):
 
 class HabitPublishedListAPIView(ListAPIView):
     """Контроллер вывода списка публичных привычек"""
+
     serializer_class = HabitSerializer
     queryset = Habit.objects.filter(is_published=True)
     pagination_class = CustomPagination
@@ -36,6 +44,7 @@ class HabitPublishedListAPIView(ListAPIView):
 
 class HabitRetrieveAPIView(RetrieveAPIView):
     """Контроллер просмотра одной привычки"""
+
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = (IsOwner,)
@@ -43,20 +52,15 @@ class HabitRetrieveAPIView(RetrieveAPIView):
 
 class HabitUpdateAPIView(UpdateAPIView):
     """Контроллер изменения одной привычки"""
+
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = (IsOwner,)
 
-    def perform_update(self, serializer):
-        """отправка сообщения об обновлении курса"""
-        instance = serializer.save()
-        check_habits()
-        # send_email_to_subs_after_updating_course.delay(instance.pk)
-        # send_email_to_subs_after_updating_course(instance.pk)
-
 
 class HabitDestroyAPIView(DestroyAPIView):
     """Контроллер удаления одной привычки"""
+
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = (IsOwner,)

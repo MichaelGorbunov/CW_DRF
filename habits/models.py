@@ -1,12 +1,12 @@
-from django.db import models
-from config.settings import AUTH_USER_MODEL, NULLABLE
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.fields import ArrayField
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+
+from config.settings import AUTH_USER_MODEL, NULLABLE
 
 
 class Habit(models.Model):
     """Модель привычки"""
-
 
     class Frequency(models.TextChoices):
         DAILY = "DAILY", "Ежедневно"
@@ -21,31 +21,36 @@ class Habit(models.Model):
         SATURDAY = 6, "Суббота"
         SUNDAY = 7, "Воскресенье"
 
-    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Создатель привычки', **NULLABLE)
+    owner = models.ForeignKey(
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Создатель привычки",
+        **NULLABLE,
+    )
     place = models.CharField(
         max_length=150,
-        verbose_name='Место',
-        help_text='Место, в котором необходимо выполнять привычку',
+        verbose_name="Место",
+        help_text="Место, в котором необходимо выполнять привычку",
     )
     habit_time = models.TimeField(
-        verbose_name='Время',
-        help_text='Время, когда необходимо выполнять привычку',
+        verbose_name="Время",
+        help_text="Время, когда необходимо выполнять привычку",
     )
     action = models.CharField(
         max_length=150,
-        verbose_name='Действие',
-        help_text='Действие, которое представляет собой привычка',
+        verbose_name="Действие",
+        help_text="Действие, которое представляет собой привычка",
     )
     is_enjoyed = models.BooleanField(
         default=False,
-        verbose_name='Признак приятной привычки',
-        help_text='Укажите, является ли привычка приятной',
+        verbose_name="Признак приятной привычки",
+        help_text="Укажите, является ли привычка приятной",
     )
     habit_link = models.ForeignKey(
-        'self',
+        "self",
         on_delete=models.SET_NULL,
-        verbose_name='Связанная привычка',
-        help_text='Привычка, которая связана с этой привычкой',
+        verbose_name="Связанная привычка",
+        help_text="Привычка, которая связана с этой привычкой",
         **NULLABLE,
     )
     # period = models.PositiveSmallIntegerField(
@@ -60,7 +65,6 @@ class Habit(models.Model):
         choices=Frequency.choices,
         default=Frequency.DAILY,
         verbose_name="Тип периодичности",
-
     )
     weekdays = ArrayField(
         models.PositiveSmallIntegerField(choices=WeekDays.choices),
@@ -71,20 +75,20 @@ class Habit(models.Model):
     )
     prize = models.CharField(
         max_length=150,
-        verbose_name='Вознаграждение',
-        help_text='Чем пользователь должен себя вознаградить после выполнения',
+        verbose_name="Вознаграждение",
+        help_text="Чем пользователь должен себя вознаградить после выполнения",
         **NULLABLE,
     )
     lead_time = models.PositiveSmallIntegerField(
         default=30,
-        verbose_name='Время на выполнение',
-        help_text='Время, которое предположительно потратится на выполнение привычки в секундах',
+        verbose_name="Время на выполнение",
+        help_text="Время, которое предположительно потратится на выполнение привычки в секундах",
         validators=[MinValueValidator(10), MaxValueValidator(120)],
     )
     is_published = models.BooleanField(
         default=False,
-        verbose_name='Признак публичности',
-        help_text='Привычки можно публиковать в общий доступ',
+        verbose_name="Признак публичности",
+        help_text="Привычки можно публиковать в общий доступ",
     )
     # habit_start = models.DateField(
     #
@@ -94,7 +98,7 @@ class Habit(models.Model):
     # )
     is_reminder_send = models.BooleanField(
         default=False,
-        verbose_name='Флаг, что напоминание отправлено',
+        verbose_name="Флаг, что напоминание отправлено",
         **NULLABLE,
     )
 
@@ -105,5 +109,5 @@ class Habit(models.Model):
         )
 
     class Meta:
-        verbose_name = 'Привычка'
-        verbose_name_plural = 'Привычки'
+        verbose_name = "Привычка"
+        verbose_name_plural = "Привычки"
