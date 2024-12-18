@@ -19,7 +19,7 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         # Получаем список разрешений, в зависимости от типа запроса
         if self.action in ["create"]:  # Если действие - создание пользователя
-            permission_classes = [AllowAny]  # Позволяем всем доступ к этому действию
+            self.permission_classes = [AllowAny]  # Позволяем всем доступ к этому действию
         else:  # Для остальных действий (retrieve, update, delete и т.д.)
             # permission_classes = [permissions.IsAuthenticated]  # Требуем аутентификацию
             self.permission_classes = [IsAccountOwner]

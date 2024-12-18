@@ -14,6 +14,7 @@ def time():
     current_date = now().date()
     current_weekday = current_date.weekday() + 1
     print(current_time)
+    print(current_weekday)
 
 
 @shared_task(
