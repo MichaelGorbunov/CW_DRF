@@ -28,6 +28,24 @@ class HabitTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data.get("place"), self.habit.place)
 
+    def test_habit_retrieve_unauthenticated(self):
+        """Проверка запрета на доступ без авторизации."""
+        self.client.force_authenticate(user=None)
+        url = f"/habits/{self.habit.pk}/detail/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_habit_retrieve_not_owner(self):
+        """Проверка, что только владелец может получить доступ к привычке."""
+        another_user = CustomUser.objects.create_user(
+            email="another@user.com", password="testing321", username="anotherUser"
+        )
+        self.client.force_authenticate(user=another_user)
+        # url = reverse("habits:habit_retrieve", args=[self.habit.pk])
+        url = f"/habits/{self.habit.pk}/detail/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
 
 class PublicHabitListAPIViewTest(APITestCase):
     def setUp(self):
