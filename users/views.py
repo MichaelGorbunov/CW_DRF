@@ -1,45 +1,53 @@
-# from django.shortcuts import render
-# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-# from rest_framework.filters import OrderingFilter
-from rest_framework.permissions import AllowAny
-
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from users.models import CustomUser
 from users.permissions import IsAccountOwner
 from users.serializer import CustomUserDetailSerializer, CustomUserSerializer
 
-
 class CustomUserViewSet(viewsets.ModelViewSet):
-    """viewset модели customuser"""
-
-    # serializer_class = CustomUserSerializer
+    """
+    ViewSet для управления профилем пользователя.
+    Позволяет:
+    - Создавать пользователей (доступно для всех).
+    - Получать и изменять только свои собственные данные (требуется аутентификация).
+    """
     queryset = CustomUser.objects.all()
-    permission_classes = [AllowAny]  # Пзволяем создавать пользователей без авторизации
+    serializer_class = CustomUserSerializer  # Базовый сериализатор
+    permission_classes = [IsAuthenticated]  # Общие разрешения по умолчанию
 
     def get_permissions(self):
-        # Получаем список разрешений, в зависимости от типа запроса
-        if self.action in ["create"]:  # Если действие - создание пользователя
-            self.permission_classes = [AllowAny]  # Позволяем всем доступ к этому действию
-        else:  # Для остальных действий (retrieve, update, delete и т.д.)
-            # permission_classes = [permissions.IsAuthenticated]  # Требуем аутентификацию
-            self.permission_classes = [IsAccountOwner]
-
-        # return [permission() for permission in permission_classes]
+        """
+        Возвращает список разрешений в зависимости от действия.
+        """
+        if self.action == "create":  # Создание пользователя
+            return [AllowAny()]  # Доступно для всех
+        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
+            return [IsAccountOwner()]  # Только владелец
         return super().get_permissions()
 
     def perform_create(self, serializer):
-        # Создаем пользователя с указанными данными и устанавливаем активность
-        user = serializer.save(is_active=True)
-        # Устанавливаем хешированный пароль
-        user.set_password(user.password)
+        """
+        Хеширует пароль пользователя перед созданием.
+        """
+        # Создаём пользователя
+        user = serializer.save()
+        user.set_password(user.password)  # Хешируем пароль
+        user.is_active = True  # Установить активным по умолчанию
         user.save()
 
     def get_serializer_class(self):
-        # if self.action in ["retrieve", "update", "partial_update"]:
+        """
+        Устанавливает сериализатор:
+        - Детальный сериализатор, если это владелец.
+        - Базовый сериализатор в остальных случаях.
+        """
+        # Если действие связано с владельцем, возвращаем CustomUserDetailSerializer
+        if self.action in ["retrieve", "update", "partial_update"]:
+            return CustomUserDetailSerializer
 
-        # user = self.get_object()
-        # if self.request.user == user:
-        if self.request.user.user_permissions == IsAccountOwner:
-            return CustomUserDetailSerializer  # Если пользователь владелец, используем полный сериализатор
-        else:
-            return CustomUserSerializer  # В противном случае - ограниченный
+        # По умолчанию используется базовый сериализатор
+        return super().get_serializer_class()
+
+
+
+
