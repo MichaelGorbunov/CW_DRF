@@ -4,8 +4,12 @@ services:
   db:
     image: postgres:16-alpine
     restart: on-failure
-    env_file:
-      - .env
+#    env_file:
+#      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     expose:
       - :"5432"
     volumes:
@@ -25,7 +29,7 @@ services:
     tty: true
     ports:
       - 8000:8000
-    command: sh -c "poetry  run python3 manage.py migrate &&  poetry run python3 manage.py  runserver 0.0.0.0:8000"
+    command: sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -37,7 +41,7 @@ services:
   celery:
     build: .
     tty: true
-    command: sh -c "poetry run celery -A config worker -l INFO"
+    command: sh -c "celery -A config worker -l INFO & celery -A config beat -l INFO"
     restart: on-failure
     volumes:
       - .:/app
@@ -45,19 +49,20 @@ services:
       - redis
       - app
       - db
-  celery-beat:
-    build: .
-    tty: true
-    command: sh -c "poetry run celery -A config beat -l INFO"
-    restart: on-failure
-    volumes:
-      - .:/app
-    depends_on:
-      - redis
-      - app
-      - db
+#  celery-beat:
+#    build: .
+#    tty: true
+#    command: sh -c "celery -A config beat -l INFO"
+#    restart: on-failure
+#    volumes:
+#      - .:/app
+#    depends_on:
+#      - redis
+#      - app
+#      - db
 
 
 volumes:
   pg_data:
+
 
