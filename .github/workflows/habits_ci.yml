@@ -73,7 +73,7 @@ jobs: #Начало секции джобов
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
     steps:
-      - name: Connect to PostgreSQL
+
       - name: Wait for PostgreSQL to be ready
         run: |
           until pg_isready -h localhost -U rest_user; do
