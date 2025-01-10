@@ -1,63 +1,53 @@
-name: Django CI
+# .github/workflows/postgres.yml
+on: push
+jobs:
+  # label of the container job
+  postgres-job:
+    # containers must run in Linux based operating systems
+    runs-on: ubuntu-latest
+    # Docker Hub image that `postgres-job` executes in
+    container: node:latest
 
-on: [ push ]
-jobs: #Начало секции джобов
-  print_hello: #Название джоба
-    runs-on: ubuntu-latest #Среда выполнения джоба
-
-    steps: #Начало секции шагов
-      - name: Print hello #Название шага
-        run: echo "Hello world!" #Команда, которая будет выполнена в терминале
-
-    #jobs:
-
-    #  lint:
-    #    runs-on: ubuntu-latest
-    #
-    #    steps:
-    #      - name: Check out code
-    #        uses: actions/checkout@v3
-    #
-    #      - name: Set up Python
-    #        uses: actions/setup-python@v4
-    #        with:
-    #          python-version: '3.12'
-    #
-    #      - name: Install dependencies
-    #        run: |
-    #          python -m pip install --upgrade pip
-    #          pip install flake8
-    #
-    #      - name: Run Flake8
-    #        run: flake8 .
-    #
-
-
-
+    # service containers to run with `postgres-job`
     services:
-      # Label used to access the service container
+      # label used to access the service container
       postgres:
         # Docker Hub image
         image: postgres:16-alpine
-        # Provide the password for postgres
+        # service environment variables
+        # `POSTGRES_HOST` is `postgres`
         env:
-
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
+          # optional (defaults to `postgres`)
+          POSTGRES_DB: postgres_db
+          # required
+          POSTGRES_PASSWORD: postgres_password
+          # optional (defaults to `5432`)
           POSTGRES_PORT: 5432
-
-        # Set health checks to wait until postgres has started
+          # optional (defaults to `postgres`)
+          POSTGRES_USER: postgres_user
+        ports:
+          # maps tcp port 5432 on service container to the host
+          - 5432:5432
+        # set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
+
     steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+
+      # queries database with postgres client
+      - name: Query database
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+        env:
+          # postgress password is required; alternatively, you can run:
+          # `PGPASSWORD=postgres_password psql ...`
+          PGPASSWORD: postgres_password
 
       - name: Check out code
         uses: actions/checkout@v3
@@ -78,4 +68,3 @@ jobs: #Начало секции джобов
           SECRET_KEY: 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
 
         run: python manage.py migrate
-
