@@ -32,6 +32,7 @@ jobs: #Начало секции джобов
         run: flake8 .
 
   install:
+    needs: lint
     runs-on: ubuntu-latest
 
     steps:
