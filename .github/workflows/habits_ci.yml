@@ -54,6 +54,11 @@ jobs: #Начало секции джобов
       - name: Run migrations
         env:
           SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
         run: python manage.py migrate
       
 
@@ -75,6 +80,7 @@ jobs: #Начало секции джобов
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST : localhost
+          POSTGRES_PORT : 5432
 
         # Set health checks to wait until postgres has started
         options: >-
