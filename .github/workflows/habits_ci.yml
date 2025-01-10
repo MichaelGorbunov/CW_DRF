@@ -32,42 +32,8 @@ jobs: #Начало секции джобов
 #        run: flake8 .
 #
   install:
-#    needs: lint
-    needs :  runner-job
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-
-          pip install -r requirements.txt
-
-      - name: Run migrations
-        env:
-          SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-        run: python manage.py migrate
-      
-
-  runner-job:
-    # You must use a Linux environment when using service containers or container jobs
-    runs-on: ubuntu-latest
-#    container: postgres:16-alpine
-
-    # Service containers to run with `runner-job`
     services:
       # Label used to access the service container
       postgres:
@@ -92,32 +58,22 @@ jobs: #Начало секции джобов
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
     steps:
+	  - name: Check out code
+        uses: actions/checkout@v3
 
-      - name: Wait for PostgreSQL to be ready
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
         run: |
-          until pg_isready -h localhost -U rest_user; do
-          echo "Waiting for PostgreSQL to be ready..."
-          sleep 2
-          done
 
-      - name: Check PostgreSQL service
-        run: |
-          echo "Checking PostgreSQL service..."
-          docker ps
-#          echo "PostgreSQL logs:"
-#          docker logs $(docker ps -q --filter ancestor=postgres:latest)
-      
+          pip install -r requirements.txt
 
+      - name: Run migrations
+        env:
+          SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
 
-
-
-#    - name: Run migrations
-#      env:
-#        SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
-#      run: python manage.py migrate
-#
-#    - name: Run tests
-#      run: python manage.py test
-#
-#
-
+        run: python manage.py migrate
