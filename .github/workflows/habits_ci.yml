@@ -49,8 +49,7 @@ jobs:
           # `PGPASSWORD=postgres_password psql ...`
           PGPASSWORD: postgres_password
 
-      - name: Check out code
-        uses: actions/checkout@v3
+
 
       - name: Set up Python
         uses: actions/setup-python@v4
