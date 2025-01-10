@@ -1,3 +1,6 @@
+не работет
+добавил серет в Repository secrets
+
 не работает
 django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
  lj,fdbk d Environment secrets
