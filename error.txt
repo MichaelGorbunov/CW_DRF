@@ -1,0 +1,5 @@
+  "SIGNING_KEY": settings.SECRET_KEY,
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/django/conf/__init__.py", line 90, in __getattr__
+    raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
+django.core.exceptions.ImproperlyConfigured: The SECRET_KEY setting must not be empty.
