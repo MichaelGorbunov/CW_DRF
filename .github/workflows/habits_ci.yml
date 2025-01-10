@@ -1,28 +1,35 @@
 name: Django CI
 
 on: [push]
+jobs: #Начало секции джобов
+  print_hello: #Название джоба
+    runs-on: ubuntu-latest #Среда выполнения джоба
 
-jobs:
+    steps: #Начало секции шагов
+      - name: Print hello #Название шага
+        run: echo "Hello world!" #Команда, которая будет выполнена в терминале
 
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run migrations
-      run: python manage.py migrate
-
-    - name: Run tests
-      run: python manage.py test
+#jobs:
+#
+#  test:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - name: Check out code
+#      uses: actions/checkout@v3
+#
+#    - name: Set up Python
+#      uses: actions/setup-python@v4
+#      with:
+#        python-version: '3.12'
+#
+#    - name: Install dependencies
+#      run: |
+#        python -m pip install --upgrade pip
+#        pip install -r requirements.txt
+#
+#    - name: Run migrations
+#      run: python manage.py migrate
+#
+#    - name: Run tests
+#      run: python manage.py test
