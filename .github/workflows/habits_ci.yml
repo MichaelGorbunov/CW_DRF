@@ -53,7 +53,7 @@ jobs: #Начало секции джобов
   runner-job:
     # You must use a Linux environment when using service containers or container jobs
     runs-on: ubuntu-latest
-    container: postgres:16-alpine
+#    container: postgres:16-alpine
 
     # Service containers to run with `runner-job`
     services:
