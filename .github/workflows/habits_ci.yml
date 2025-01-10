@@ -58,22 +58,23 @@ jobs: #Начало секции джобов
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
     steps:
-	  - name: Check out code
-        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-          cache: 'pip'
+    - name: Check out code
+      uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        cache: 'pip'
 
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
 
-      - name: Run migrations
-        env:
-          SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
+        pip install -r requirements.txt
 
-        run: python manage.py migrate
+    - name: Run migrations
+      env:
+        SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
+
+      run: python manage.py migrate
