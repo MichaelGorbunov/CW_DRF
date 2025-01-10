@@ -59,4 +59,5 @@ jobs: #Начало секции джобов
 #    - name: Run tests
 #      run: python manage.py test
 #
+#
 
