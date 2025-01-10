@@ -167,5 +167,5 @@ di4/
 /lint.cmd
 /lint_add.cmd
 /db.sqlite3
-
+.di4/
 

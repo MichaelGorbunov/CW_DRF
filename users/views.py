@@ -6,6 +6,7 @@ from users.models import CustomUser
 from users.permissions import IsAccountOwner
 from users.serializer import CustomUserDetailSerializer, CustomUserSerializer
 
+
 class CustomUserViewSet(viewsets.ModelViewSet):
     """
     ViewSet для управления профилем пользователя.
@@ -49,7 +50,3 @@ class CustomUserViewSet(viewsets.ModelViewSet):
 
         # По умолчанию используется базовый сериализатор
         return super().get_serializer_class()
-
-
-
-
