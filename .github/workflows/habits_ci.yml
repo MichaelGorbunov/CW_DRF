@@ -85,8 +85,8 @@ jobs: #Начало секции джобов
         run: |
           echo "Checking PostgreSQL service..."
           docker ps
-          echo "PostgreSQL logs:"
-          docker logs $(docker ps -q --filter ancestor=postgres:latest)
+#          echo "PostgreSQL logs:"
+#          docker logs $(docker ps -q --filter ancestor=postgres:latest)
       
 
 
