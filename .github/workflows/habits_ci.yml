@@ -72,6 +72,24 @@ jobs: #Начало секции джобов
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
+    steps:
+      - name: Connect to PostgreSQL
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -U rest_user; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 2
+          done
+
+      - name: Check PostgreSQL service
+        run: |
+          echo "Checking PostgreSQL service..."
+          docker ps
+          echo "PostgreSQL logs:"
+          docker logs $(docker ps -q --filter ancestor=postgres:latest)
+      
+
+
 
 
 #    - name: Run migrations
