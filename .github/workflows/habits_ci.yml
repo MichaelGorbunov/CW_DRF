@@ -1,34 +1,22 @@
-# .github/workflows/postgres.yml
-on: push
-jobs:
-  # label of the container job
-  postgres-job:
-    # containers must run in Linux based operating systems
-    runs-on: ubuntu-latest
-    # Docker Hub image that `postgres-job` executes in
-    container: node:latest
+name: Django CI
 
-    # service containers to run with `postgres-job`
+on: [ push ]
+
+jobs:
+  django:
+    runs-on: ubuntu-latest
+
     services:
-      # label used to access the service container
-      postgres:
-        # Docker Hub image
+      db:
         image: postgres:16-alpine
-        # service environment variables
-        # `POSTGRES_HOST` is `postgres`
         env:
-          # optional (defaults to `postgres`)
-          POSTGRES_DB: postgres_db
-          # required
-          POSTGRES_PASSWORD: postgres_password
-          # optional (defaults to `5432`)
-          POSTGRES_PORT: 5432
-          # optional (defaults to `postgres`)
-          POSTGRES_USER: postgres_user
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mydatabase
         ports:
-          # maps tcp port 5432 on service container to the host
           - 5432:5432
-        # set health checks to wait until postgres has started
+        # Если требуется, вы можете настроить ожидание
+        # чтобы PostgreSQL был доступен перед запуском миграций
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -36,34 +24,26 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
-
-      # queries database with postgres client
-      - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
-        env:
-          # postgress password is required; alternatively, you can run:
-          # `PGPASSWORD=postgres_password psql ...`
-          PGPASSWORD: postgres_password
-
-
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: '3.12'  # Замените на вашу версию Python
           cache: 'pip'
 
       - name: Install dependencies
         run: |
-          
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run migrations
+      - name: Run database migrations
         env:
-          SECRET_KEY: 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
-
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/mydatabase
         run: python manage.py migrate
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/mydatabase
+        run: python manage.py test
