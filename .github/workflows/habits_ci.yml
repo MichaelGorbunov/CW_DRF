@@ -1,55 +1,44 @@
-# .github/workflows/postgres.yml
-on: push
-jobs:
-  # label of the container job
-  postgres-job:
-    # containers must run in Linux based operating systems
-    runs-on: ubuntu-latest
-    # Docker Hub image that `postgres-job` executes in
-    container: node:latest
+name: Django CI
 
-    # service containers to run with `postgres-job`
-    services:
-      # label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:16-alpine
-        # service environment variables
-        # `POSTGRES_HOST` is `postgres`
-        env:
-          # optional (defaults to `postgres`)
-          POSTGRES_DB: postgres_db
-          # required
-          POSTGRES_PASSWORD: postgres_password
-          # optional (defaults to `5432`)
-          POSTGRES_PORT: 5432
-          # optional (defaults to `postgres`)
-          POSTGRES_USER: postgres_user
-        ports:
-          # maps tcp port 5432 on service container to the host
-          - 5432:5432
-        # set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+on: [ push ]
+jobs: #Начало секции джобов
+  print_hello: #Название джоба
+    runs-on: ubuntu-latest #Среда выполнения джоба
+
+    steps: #Начало секции шагов
+      - name: Print hello #Название шага
+        run: echo "Hello world!" #Команда, которая будет выполнена в терминале
+
+  #jobs:
+
+#  lint:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.12'
+#
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install flake8
+#
+#      - name: Run Flake8
+#        run: flake8 .
+#
+  install:
+#    needs: lint
+    needs :  runner-job
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
-
-      # queries database with postgres client
-      - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
-        env:
-          # postgress password is required; alternatively, you can run:
-          # `PGPASSWORD=postgres_password psql ...`
-          PGPASSWORD: postgres_password
-
-
+      - name: Check out code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -59,11 +48,76 @@ jobs:
 
       - name: Install dependencies
         run: |
-          
+
           pip install -r requirements.txt
 
       - name: Run migrations
         env:
-          SECRET_KEY: 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
-
+          SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
         run: python manage.py migrate
+
+
+  runner-job:
+    # You must use a Linux environment when using service containers or container jobs
+    runs-on: ubuntu-latest
+#    container: postgres:16-alpine
+
+    # Service containers to run with `runner-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:16-alpine
+        # Provide the password for postgres
+        env:
+
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST : localhost
+          POSTGRES_PORT : 5432
+
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -U rest_user; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 2
+          done
+
+      - name: Check PostgreSQL service
+        run: |
+          echo "Checking PostgreSQL service..."
+          docker ps
+#          echo "PostgreSQL logs:"
+#          docker logs $(docker ps -q --filter ancestor=postgres:latest)
+
+
+
+
+
+#    - name: Run migrations
+#      env:
+#        SECRET_KEY : 3b85o3eg0&(dl_6kz2!21b@snsr5(p#r721nj!ypf-pe4$4$$p
+#      run: python manage.py migrate
+#
+#    - name: Run tests
+#      run: python manage.py test
+#
+#
+
