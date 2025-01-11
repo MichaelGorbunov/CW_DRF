@@ -113,6 +113,6 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_KEY }}
       - name: Run bash script via ssh
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "bash -help"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "ls"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
