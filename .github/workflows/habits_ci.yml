@@ -81,8 +81,8 @@ jobs:
 #      - name: Push image in DockerHub
 #        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
 
-      - name: Build and Push Docker image
-        run: |
-          docker compose build
-          docker compose push
+#      - name: Build and Push Docker image
+#        run: |
+#          docker compose build
+#          docker compose push
 
