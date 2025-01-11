@@ -26,6 +26,7 @@ services:
       retries: 3
   app:
     build: .
+    image: mg0rby/habits:${{ github.sha }}  # Укажите имя образа с вашим именем пользователя
     tty: true
     ports:
       - 8000:8000
