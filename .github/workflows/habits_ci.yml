@@ -83,6 +83,6 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker-compose build
-          docker-compose push
+          docker compose build
+          docker compose push
 
