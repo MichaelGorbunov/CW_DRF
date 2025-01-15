@@ -101,6 +101,8 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
+
 
   deploy:
     needs: build
@@ -115,8 +117,10 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
             docker stop habits || true
             docker rm habits || true
-            docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+#            docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+            docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
           EOF
