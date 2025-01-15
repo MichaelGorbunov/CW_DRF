@@ -28,14 +28,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
       POSTGRES_HOST: 'localhost'
       POSTGRES_DB: 'some_db'
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'some_password'
+
 #    needs: lint
     services:
       db:
         image: postgres:16-alpine
+
+      env:
+        POSTGRES_DB: 'some_db'
+        POSTGRES_USER: 'postgres'
+        POSTGRES_PASSWORD: 'some_password'
 
         ports:
           - 5432:5432
@@ -63,11 +70,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run migrations
-        env:
-          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
-          POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'some_db'
-          POSTGRES_USER: 'postgres'
-          POSTGRES_PASSWORD: 'some_password'
+
         run:
           python manage.py migrate
