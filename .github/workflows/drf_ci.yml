@@ -1,40 +1,40 @@
 name: DRF CI/CD Pipeline
 
 #on: [push, pull_request]
-on: [push]
+on: [ push ]
 
 jobs:
-#  lint:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - name: Check out code
-#      uses: actions/checkout@v3
-#
-#    - name: Set up Python
-#      uses: actions/setup-python@v4
-#      with:
-#        python-version: '3.12'
-#
-#    - name: Install dependencies
-#      run: |
-#        python -m pip install --upgrade pip
-#        pip install flake8
-#
-#    - name: Run Flake8
-#      run: flake8 .
+  #  lint:
+  #    runs-on: ubuntu-latest
+  #
+  #    steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@v3
+  #
+  #    - name: Set up Python
+  #      uses: actions/setup-python@v4
+  #      with:
+  #        python-version: '3.12'
+  #
+  #    - name: Install dependencies
+  #      run: |
+  #        python -m pip install --upgrade pip
+  #        pip install flake8
+  #
+  #    - name: Run Flake8
+  #      run: flake8 .
 
 
   test:
     runs-on: ubuntu-latest
 
     services:
-#    needs: lint
+      #    needs: lint
       db:
         image: postgres:16-alpine
         env:
           POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'lms'
+          POSTGRES_DB: 'test_db'
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         ports:
@@ -46,7 +46,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
 
     steps:
       - name: Checkout repository
@@ -67,20 +66,18 @@ jobs:
         env:
           SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
           POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'lms'
+          POSTGRES_DB: 'test_db'
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
-
         run:
           python manage.py migrate
 
       - name: Run test
-#        env:
-#          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
-#          POSTGRES_HOST: 'localhost'
-#          POSTGRES_DB: 'lms'
-#          POSTGRES_USER: 'postgres'
-#          POSTGRES_PASSWORD: 'some_password'
-#          ENV_TYPE: 'local'
+        env:
+          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
+          POSTGRES_HOST: 'localhost'
+          POSTGRES_DB: 'test_db'
+          POSTGRES_USER: 'postgres'
+          POSTGRES_PASSWORD: 'some_password'
         run:
           python manage.py test
