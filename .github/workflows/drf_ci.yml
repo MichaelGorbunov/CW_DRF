@@ -78,12 +78,12 @@ jobs:
 
 
       - name: Run test
-        env:
+#        env:
 #          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
-          POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'test_db'
-          POSTGRES_USER: 'postgres'
-          POSTGRES_PASSWORD: 'some_password'
+#          POSTGRES_HOST: 'localhost'
+#          POSTGRES_DB: 'test_db'
+#          POSTGRES_USER: 'postgres'
+#          POSTGRES_PASSWORD: 'some_password'
         run:
           echo "$SECRET_KEY"
           python manage.py test
