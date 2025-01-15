@@ -33,17 +33,15 @@ jobs:
       POSTGRES_DB: 'some_db'
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'some_password'
-
-#    needs: lint
     services:
+#    needs: lint
       db:
         image: postgres:16-alpine
-
-      env:
-        POSTGRES_DB: 'some_db'
-        POSTGRES_USER: 'postgres'
-        POSTGRES_PASSWORD: 'some_password'
-
+        env:
+          POSTGRES_HOST: 'localhost'
+          POSTGRES_DB: 'lms'
+          POSTGRES_USER: 'postgres'
+          POSTGRES_PASSWORD: 'some_password'
         ports:
           - 5432:5432
         # Если требуется, вы можете настроить ожидание
@@ -53,6 +51,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
 
     steps:
       - name: Checkout repository
