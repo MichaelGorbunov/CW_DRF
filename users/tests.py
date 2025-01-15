@@ -1,12 +1,14 @@
 from rest_framework.test import APITestCase
-from rest_framework.permissions import BasePermission
-from rest_framework.request import Request
-from rest_framework.test import APIRequestFactory, force_authenticate
+# from rest_framework.permissions import BasePermission
+# from rest_framework.request import Request
+from rest_framework.test import APIRequestFactory
 
 from .permissions import IsAccountOwner
 from .models import CustomUser
-from .serializer import CustomUserDetailSerializer, CustomUserSerializer
-from .views import CustomUserViewSet
+
+
+# from .serializer import CustomUserDetailSerializer, CustomUserSerializer
+# from .views import CustomUserViewSet
 
 
 class IsAccountOwnerTestCase(APITestCase):
@@ -67,5 +69,3 @@ class IsAccountOwnerTestCase(APITestCase):
         )
 
         self.assertFalse(is_permitted, "Неаутентифицированный пользователь не должен иметь доступ.")
-
-
