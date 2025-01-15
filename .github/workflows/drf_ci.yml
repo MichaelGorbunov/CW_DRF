@@ -75,12 +75,12 @@ jobs:
           python manage.py migrate
 
       - name: Run test
-        env:
-          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
-          POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'lms'
-          POSTGRES_USER: 'postgres'
-          POSTGRES_PASSWORD: 'some_password'
-          ENV_TYPE: 'local'
+#        env:
+#          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
+#          POSTGRES_HOST: 'localhost'
+#          POSTGRES_DB: 'lms'
+#          POSTGRES_USER: 'postgres'
+#          POSTGRES_PASSWORD: 'some_password'
+#          ENV_TYPE: 'local'
         run:
           python manage.py test
