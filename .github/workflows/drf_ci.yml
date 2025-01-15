@@ -35,10 +35,10 @@ jobs:
         image: postgres:16-alpine
         env:
           POSTGRES_HOST: 'localhost'
-          POSTGRES_DB: 'test_db'
+#          POSTGRES_DB: 'test_db'
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
-        expose:
+        ports:
           - 5432:5432
         # Если требуется, вы можете настроить ожидание
         # чтобы PostgreSQL был доступен перед запуском миграций
