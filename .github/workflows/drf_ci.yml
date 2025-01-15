@@ -35,7 +35,7 @@ jobs:
         image: postgres:16-alpine
         env:
           POSTGRES_HOST: 'localhost'
-#          POSTGRES_DB: 'test_db'
+          POSTGRES_DB: 'test_db'
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         ports:
@@ -60,6 +60,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          env
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
@@ -71,17 +72,21 @@ jobs:
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         run:
+          env
           python manage.py migrate
+          env
 
       - name: Run test
         env:
-          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
+#          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
           POSTGRES_HOST: 'localhost'
           POSTGRES_DB: 'test_db'
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         run:
+          env
           python manage.py test
+          env
 
 
 
