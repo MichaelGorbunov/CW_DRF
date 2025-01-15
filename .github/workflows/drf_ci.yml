@@ -60,9 +60,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          env
+          
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          echo "$POSTGRES_USER"
 
       - name: Run migrations
         env:
@@ -72,9 +73,9 @@ jobs:
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         run:
-          env
+
           python manage.py migrate
-          env
+
 
       - name: Run test
         env:
@@ -84,9 +85,9 @@ jobs:
           POSTGRES_USER: 'postgres'
           POSTGRES_PASSWORD: 'some_password'
         run:
-          env
+          echo "$SECRET_KEY"
           python manage.py test
-          env
+
 
 
 
