@@ -3,6 +3,7 @@ services:
 
   db:
     image: postgres:16-alpine
+    container_name: database-server
     restart: on-failure
 #    env_file:
 #      - .env
@@ -10,6 +11,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+#      POSTGERS_HOST: ${POSTGRES_HOST}
+#      POSTGRES_PORT: ${POSTGRES_PORT}
     expose:
       - :"5432"
     volumes:
@@ -26,10 +29,14 @@ services:
       retries: 3
   app:
     build: .
+    image: ${DOCKER_HUB_USER}/cw_drf-app:latest
+    container_name: habits-app
     tty: true
-    ports:
-      - 8000:8000
-    command: sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+#    ports:
+#      - 8765:8765
+    expose:
+      - :"8765"
+    command: sh -c "python3 manage.py migrate && python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8765"
     depends_on:
       db:
         condition: service_healthy
@@ -37,9 +44,12 @@ services:
       - .:/app
   redis:
     image: redis:latest
+    container_name: redis-server
     restart: on-failure
   celery:
     build: .
+    image: ${DOCKER_HUB_USER}/cw_drf-celery:latest
+    container_name: celery-server
     tty: true
     command: sh -c "celery -A config worker -l INFO & celery -A config beat -l INFO"
     restart: on-failure
@@ -49,17 +59,6 @@ services:
       - redis
       - app
       - db
-#  celery-beat:
-#    build: .
-#    tty: true
-#    command: sh -c "celery -A config beat -l INFO"
-#    restart: on-failure
-#    volumes:
-#      - .:/app
-#    depends_on:
-#      - redis
-#      - app
-#      - db
 
 
 volumes:
