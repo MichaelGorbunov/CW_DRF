@@ -106,7 +106,7 @@ jobs:
         run: docker compose  -f docker-compose.github.yml build
 
       - name: Push Docker image to Docker Hub
-        run: docker compose push
+        run: docker compose -f docker-compose.github.yml push
 #
 #  deploy:
 #    needs: build
