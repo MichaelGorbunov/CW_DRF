@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копируем код приложения в контейнер
-COPY ./ .
+COPY . .
 
 # Команда для запуска приложения при старте контейнера
 CMD ["bash"]
