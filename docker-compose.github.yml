@@ -8,9 +8,9 @@ services:
 #    env_file:
 #      - .env
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: POSTGRES_DB
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
 #      POSTGERS_HOST: ${POSTGRES_HOST}
 #      POSTGRES_PORT: ${POSTGRES_PORT}
     expose:
@@ -29,7 +29,7 @@ services:
       retries: 3
   app:
     build: .
-    image: ${DOCKER_HUB_USER}/cw_drf-app:latest
+    image: mg0rby/cw_drf-app:latest
     container_name: habits-app
     tty: true
 #    ports:
@@ -48,7 +48,7 @@ services:
     restart: on-failure
   celery:
     build: .
-    image: ${{secrets.DOCKER_HUB_USER}}/cw_drf-celery:latest
+    image: mg0rby/cw_drf-celery:latest
     container_name: celery-server
     tty: true
     command: sh -c "celery -A config worker -l INFO & celery -A config beat -l INFO"
