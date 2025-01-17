@@ -36,7 +36,7 @@ services:
 #      - 8765:8765
     expose:
       - :"8765"
-    command: sh -c "python3 ./manage.py migrate && python ./manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8765"
+    command: sh -c "python3 ./manage.py migrate && python3 ./manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8765"
     depends_on:
       db:
         condition: service_healthy
