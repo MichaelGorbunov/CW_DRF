@@ -60,6 +60,15 @@ services:
       - app
       - db
 
+  nginx:
+    container_name: nginx-proxy-server
+    image: mg0rby/cw_drf-nginx:latest
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    volumes:
+      - ./static:/mysite/static
 
 volumes:
   pg_data:
