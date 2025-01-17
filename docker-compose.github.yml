@@ -61,7 +61,7 @@ services:
       - db
 
   nginx:
-    build ./nginx
+    build: ./nginx
     container_name: nginx-proxy-server
     image: mg0rby/cw_drf-nginx:latest
     ports:
