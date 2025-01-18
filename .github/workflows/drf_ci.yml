@@ -5,25 +5,25 @@ on: [ push ]
 
 jobs:
 
-  #  lint:
-  #    runs-on: ubuntu-latest
-  #
-  #    steps:
-  #    - name: Check out code
-  #      uses: actions/checkout@v3
-  #
-  #    - name: Set up Python
-  #      uses: actions/setup-python@v4
-  #      with:
-  #        python-version: '3.12'
-  #
-  #    - name: Install dependencies
-  #      run: |
-  #        python -m pip install --upgrade pip
-  #        pip install flake8
-  #
-  #    - name: Run Flake8
-  #      run: flake8 .
+    lint:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Run Flake8
+        run: flake8 .
 
 
 #  test:
@@ -91,22 +91,22 @@ jobs:
 
 
 
-  build:
-#    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Log in to Docker Hub
-        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-
-      - name: Build Docker image
-        run: docker compose  -f docker-compose.github.yml build
-
-      - name: Push Docker image to Docker Hub
-        run: docker compose -f docker-compose.github.yml push
+#  build:
+##    needs: test
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Log in to Docker Hub
+#        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+#
+#      - name: Build Docker image
+#        run: docker compose  -f docker-compose.github.yml build
+#
+#      - name: Push Docker image to Docker Hub
+#        run: docker compose -f docker-compose.github.yml push
 #
 #  deploy:
 #    needs: build
@@ -121,8 +121,8 @@ jobs:
 #      - name: Deploy to server
 #        run: |
 #          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-#            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
+#            docker pull ${{ secrets.DOCKER_HUB_USER }}/habits:latest
 #            docker stop habits || true
 #            docker rm habits || true
-#            docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
+#            docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USER }}/habits:latest
 #          EOF
