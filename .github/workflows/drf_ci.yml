@@ -123,8 +123,8 @@ jobs:
               
               docker compose down
               docker compose build
-              ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-              docker compose push
+#              ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+#              docker compose push
               docker compose up -d
               EOF
     
