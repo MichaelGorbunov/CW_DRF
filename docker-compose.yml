@@ -59,7 +59,16 @@ services:
       - redis
       - app
       - db
-
+  nginx:
+    container_name: nginx-proxy-server
+    build: ./nginx
+    image: ${DOCKER_HUB_USER}/cw_drf-nginx:latest
+    ports:
+      - 80:80
+    depends_on:
+      - app
+    volumes:
+      - ./static:/mysite/static
 
 volumes:
   pg_data:
