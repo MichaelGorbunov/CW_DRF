@@ -76,6 +76,8 @@ jobs:
 
 
       - name: Run test
+        env:
+          SECRET_KEY: 'gxt&zs7&=dm(5umk20(t93a9=##j_*$vi47q!1abrmfr+iu)*$'
         run:
           python3 manage.py test -v3
 #
