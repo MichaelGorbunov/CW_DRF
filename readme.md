@@ -14,11 +14,30 @@ CRUD-операции для привычек через API.
 ### Использование
 
 * клонируйте репозиторий 
-* инициализируйте poetry
-* установите зависимости
-* измените файл `.env_sample` и сохраните как `.env`
+
+_git clone --branch deploy --single-branch https://github.com/MichaelGorbunov/CW_DRF_
+
+* настройте сервер на работу с docker и docker compose
+* создайте директорию на сервере для размещения проекта(например /var/www/PRJ1)
+* измените файл `.env_sample` и сохраните как `.env` в директории проекта на удаленном сервере
 * создайте контейнеры `docker compose build`
 * запустите контейнеры `docker compose up`
+* контейнеры будут пересозданы и запущены при изменении кода при помощи github actions
+* для использования github actions установите следующие секреты для репозитория
+
+_DEPLOY_DIR_
+	
+директория для развертывания	
+	
+_SSH_KEY_
+	
+значение приватного ключа ssh
+	
+_SSH_USER_
+
+пользователь(например root) 
+
+
 
 
 
@@ -33,7 +52,7 @@ CRUD-операции для привычек через API.
     Редактирование привычки.
     Удаление привычки
 
-http://localhost:8000/users/users/login/ 
+http://185.92.73.149/users/users/login/ 
 
 метод POST
 
@@ -41,7 +60,7 @@ http://localhost:8000/users/users/login/
 "password":"123456789"}
 получение токена
 
-http://localhost:8000/users/users/
+http://185.92.73.149/users/users/
 
 метод POST
 
@@ -51,13 +70,13 @@ http://localhost:8000/users/users/
 
 создание пользователя
 
-http://127.0.0.1:8000/habits/list/
+http://185.92.73.149/habits/list/
 
 метод GET
 
 Список привычек текущего пользователя с пагинацией
 
-http://127.0.0.1:8000/habits/published/
+http://185.92.73.149/habits/published/
 
 метод GET
 
