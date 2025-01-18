@@ -119,15 +119,14 @@ jobs:
 
       - name: Build image ,pull,push ,up
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'  
-          docker compose down
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           docker compose build
           docker compose up -d
           EOF
 
 
 #          cd ${{ secrets.DEPLOY_DIR }}
-#          pwd
+#          pwd          docker compose down
 #
 #          docker compose build
 #          docker compose up -d
