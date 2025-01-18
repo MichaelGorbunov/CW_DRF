@@ -114,7 +114,20 @@ jobs:
 
           - name: Copy project files to server
             run: |
-              rsync -avz --exclude '__pycache__' --exclude '.git' . ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}    
+              rsync -avz --exclude '__pycache__' --exclude '.git' . ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }} 
+              
+
+          - name: Build image ,pull,push ,up
+            run: |
+              ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+              
+              docker compose down
+              docker compose build
+              ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+              docker compose push
+              docker compose up -d
+              EOF
+    
 
 
 #  build:
