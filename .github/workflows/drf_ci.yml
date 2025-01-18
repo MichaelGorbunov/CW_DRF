@@ -119,7 +119,8 @@ jobs:
 
       - name: Build image ,pull,push ,up
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'              
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'  
+          cd ${{ secrets.DEPLOY_DIR }}
           pwd     
           EOF
 
