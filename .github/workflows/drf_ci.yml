@@ -73,13 +73,13 @@ jobs:
           POSTGRES_PASSWORD: 'some_password'
         run:
 
-          python manage.py migrate
+          python3 manage.py migrate
 
 
       - name: Run test
         run:
           echo "$SECRET_KEY"
-          python manage.py test
+          python3 manage.py test
 #
 #
 #  deploy:
