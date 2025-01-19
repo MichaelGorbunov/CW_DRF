@@ -16,7 +16,7 @@ from habits.serializers import HabitSerializer
 class HabitListAPIView(ListAPIView):
     """Контроллер вывода списка привычек"""
 
-    queryset = Habit.objects.all()
+    queryset = Habit.objects.all().order_by('id')
     serializer_class = HabitSerializer
     pagination_class = CustomPagination
 
