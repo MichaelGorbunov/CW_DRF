@@ -76,7 +76,7 @@ http://____/habits/list/
 
 Список привычек текущего пользователя с пагинацией
 
-http://185.92.73.149/habits/published/
+http://____/habits/published/
 
 метод GET
 
