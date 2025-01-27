@@ -52,7 +52,7 @@ _SSH_USER_
     Редактирование привычки.
     Удаление привычки
 
-http://185.92.73.149/users/users/login/ 
+http://____/users/users/login/ 
 
 метод POST
 
@@ -60,7 +60,7 @@ http://185.92.73.149/users/users/login/
 "password":"123456789"}
 получение токена
 
-http://185.92.73.149/users/users/
+http://____/users/users/
 
 метод POST
 
@@ -70,7 +70,7 @@ http://185.92.73.149/users/users/
 
 создание пользователя
 
-http://185.92.73.149/habits/list/
+http://____/habits/list/
 
 метод GET
 
